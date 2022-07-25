@@ -16,12 +16,14 @@ def hampel_filter(x: Union[List, pd.Series, np.ndarray], window_size: int = 5, n
     :return: the outlier indices
     """
 
-    if not (type(x) == List or type(x) == np.ndarray or type(x) == pd.Series):
+    if not (type(x) == list or type(x) == np.ndarray or type(x) == pd.Series):
         raise ValueError("x must be either of type List, numpy.ndarray, or pandas.Series.")
 
     if not (type(window_size) == int and window_size % 2 == 1 and window_size > 0):
-
         raise ValueError("window_size must be a positive odd integer greater than 0.")
+
+    if not (type(n_sigma) == int and n_sigma >= 0):
+        raise ValueError("n_sigma must be a positive integer greater than or equal to 0.")
 
     # convert the timeseries values to numpy.array
     np_x = np.array(x)
@@ -33,7 +35,7 @@ def hampel_filter(x: Union[List, pd.Series, np.ndarray], window_size: int = 5, n
     outlier_indices = np.nonzero(np.abs(np_x[(window_size-1)//2:-(window_size-1)//2] - rolling_median)
                                  >= (n_sigma * rolling_sigma))[0] + (window_size-1)//2
 
-    if type(x) == List:
+    if type(x) == list:
         # When x is of List[float | int], return the indices in List.
         return list(outlier_indices)
     elif type(x) == pd.Series:
