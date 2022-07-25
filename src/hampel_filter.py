@@ -5,7 +5,7 @@ from typing import Union, List
 
 
 def hampel_filter(x: Union[List, pd.Series, np.ndarray], window_size: int = 5, n_sigma: int = 3, c: float = 1.4826) \
-        -> np.array:
+        -> Union[List, pd.Series, np.ndarray]:
     """ Outlier detection using the Hampel identifier
 
     :param x: timeseries values of type List, numpy.ndarray, or pandas.Series
