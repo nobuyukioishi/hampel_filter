@@ -4,11 +4,11 @@ import pandas as pd
 from typing import Union, List
 
 
-def hampel_filter(x: Union[List, pd.Series, np.array], window_size: int = 5, n_sigma: int = 3, c: float = 1.4826) \
+def hampel_filter(x: Union[List, pd.Series, np.ndarray], window_size: int = 5, n_sigma: int = 3, c: float = 1.4826) \
         -> np.array:
     """ Outlier detection using the Hampel identifier
 
-    :param x: timeseries values of type List, numpy.array, or pandas.Series
+    :param x: timeseries values of type List, numpy.ndarray, or pandas.Series
     :param window_size: length of the sliding window, a positive odd integer.
         (`window_size` - 1) // 2 adjacent samples on each side of the current sample are used for calculating median.
     :param n_sigma: threshold for outlier detection, a real scalar greater than or equal to 0. default is 3.
@@ -16,8 +16,8 @@ def hampel_filter(x: Union[List, pd.Series, np.array], window_size: int = 5, n_s
     :return: the outlier indices
     """
 
-    if not (type(x) == List or type(x) == np.array or type(x) == pd.Series):
-        raise ValueError("x must be either of type List, numpy.array, or pandas.Series.")
+    if not (type(x) == List or type(x) == np.ndarray or type(x) == pd.Series):
+        raise ValueError("x must be either of type List, numpy.ndarray, or pandas.Series.")
 
     if not (type(window_size) == int and window_size % 2 == 1 and window_size > 0):
 
