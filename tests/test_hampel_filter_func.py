@@ -44,6 +44,9 @@ def test_negative_window_size(sample_data):
     with pytest.raises(ValueError):
         hampel_filter(sample_data, window_size=-1)
 
+    with pytest.raises(ValueError):
+        hampel_filter(sample_data, window_size=3)
+
 
 def test_zero_window_size(sample_data):
     with pytest.raises(ValueError):
