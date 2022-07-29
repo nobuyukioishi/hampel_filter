@@ -19,12 +19,12 @@ def sample_data(sample_outlier_indices):
 
 def test_np_input(sample_data, sample_outlier_indices):
     hampel = HampelFilter()
-    assert all(hampel.apply(sample_data) == np.array(sample_outlier_indices))
+    assert all(hampel.apply(sample_data).get_indices() == np.array(sample_outlier_indices))
 
 
 def test_list_input(sample_data, sample_outlier_indices):
     hampel = HampelFilter()
-    assert hampel.apply(list(sample_data)) == sample_outlier_indices
+    assert hampel.apply(list(sample_data)).get_indices() == sample_outlier_indices
 
 
 def test_series_input(sample_data, sample_outlier_indices):
@@ -34,8 +34,14 @@ def test_series_input(sample_data, sample_outlier_indices):
     hampel = HampelFilter()
     sr_sample_data = pd.Series(sample_data)
     sr_sample_data.index = sr_sample_data.index + 10
-    outlier_indices = hampel.apply(sr_sample_data)
+    outlier_indices = hampel.apply(sr_sample_data).get_indices()
     assert all(outlier_indices == sr_sample_data[outlier_indices].index)
+
+
+def test_get_indices_before_apply():
+    hampel = HampelFilter()
+    with pytest.raises(AttributeError):
+        hampel.get_indices()
 
 
 def test_get_boundaries_before_apply():
