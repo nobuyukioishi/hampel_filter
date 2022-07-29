@@ -30,6 +30,7 @@ class HampelFilter:
         self.c = c
 
         # These values will be set after executing apply()
+        self._outlier_indices = None
         self._upper_bound = None
         self._lower_bound = None
 
@@ -59,12 +60,21 @@ class HampelFilter:
 
         if type(x) == list:
             # When x is of List[float | int], return the indices in List.
-            return list(outlier_indices)
+            self._outlier_indices = list(outlier_indices)
         elif type(x) == pd.Series:
             # When x is of pd.Series, return the indices of the Series object.
-            return x.index[outlier_indices]
+            self._outlier_indices = x.index[outlier_indices]
         else:
-            return outlier_indices
+            self._outlier_indices = outlier_indices
+
+        return self
+
+    def get_indices(self) -> Union[List, pd.Series, np.ndarray]:
+        """
+        """
+        if self._outlier_indices is None:
+            raise AttributeError("Outlier indices have not been set. Execute hampel_filter_object.apply(x) first.")
+        return self._outlier_indices
 
     def get_boundaries(self) -> Tuple[np.ndarray, np.ndarray]:
         """ Returns the upper and lower boundaries of the filter. Note that the values are `window_size - 1` shorter than the given timeseries x.
@@ -89,6 +99,5 @@ def hampel_filter(x: Union[List, pd.Series, np.ndarray], window_size: int = 5, n
     :return: the outlier indices
     """
 
-    hampel = HampelFilter(window_size=window_size, n_sigma=n_sigma, c=c)
-    return hampel.apply(x)
+    return HampelFilter(window_size=window_size, n_sigma=n_sigma, c=c).apply(x).get_indices()
 
