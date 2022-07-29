@@ -25,7 +25,9 @@ setuptools.setup(
     ],
     extras_requires={
         "dev": [
-            "pytest>=6.0.2"
+            "pytest>=6.0.2",
+            "jupyter",
+            "matplotlib"
         ]
     },
     python_requires='>=3.8',
