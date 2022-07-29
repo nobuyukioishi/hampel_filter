@@ -59,7 +59,7 @@ sin_x[[50, 150]] = 0
 sin_x[75] = -1
 sin_x[125] = 1
 
-# get outlier indices
+# Get boundaries for window_size=5 and n_sigma=3
 hf = HampelFilter(window_size=5, n_sigma=3)
 outlier_indices = hf.apply(x=sin_x).get_indices() # 50, 75, 125, 150
 lower_bounds, upper_bounds = hf.get_boundaries()
@@ -72,7 +72,7 @@ axs[0].scatter(x[outlier_indices], sin_x[outlier_indices], c='r', label="outlier
 axs[0].set_title(f"Outlier detection using Hampel filter and its boundaries\n(window_size={hf.window_size}, n_sigma={hf.n_sigma})")
 axs[0].legend()
 
-# get outlier indices
+# Get boundaries for window_size=7 and n_sigma=5
 hf = HampelFilter(window_size=7, n_sigma=5)
 outlier_indices = hf.apply(x=sin_x).get_indices() # 50, 150
 lower_bounds, upper_bounds = hf.get_boundaries()
